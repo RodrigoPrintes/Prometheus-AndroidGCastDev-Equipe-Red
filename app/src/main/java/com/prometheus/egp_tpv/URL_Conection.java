@@ -16,18 +16,21 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 interface Callback<T> {
-    void onSuccess(T result) throws JSONException;
+    //void onSuccess(T result ) throws JSONException;
+    void onSuccess(T result ) throws JSONException;
+
     void onError(Exception e);
 }
 public class URL_Conection  {
     public  URL_Conection(){
 
     }
+    public Context context;
 
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     public void getAPIProgramation(Context context, String date, Callback<String> callback) {
-
+        this.context = context;
         executorService.submit(() -> {
             try {
                 String uri = "https://epg-api.video.globo.com/programmes/1337?date=" + date;

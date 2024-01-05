@@ -3,20 +3,31 @@ package com.prometheus.egp_tpv;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import java.util.List;
 import java.util.Locale;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 public class MainActivity extends AppCompatActivity {
     private String data;
@@ -27,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         TextView textView = findViewById(R.id.titleTextView);
         TextView textView1 = findViewById(R.id.descriptionTextView);
-
+        ImageView imageView = findViewById(R.id.ICON);
         Date currentDate = new Date();
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -41,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String response) throws JSONException {
                 // Handle successful response here
-                System.out.println("Response: " + response);
+
                 Log.d("HTTP Request", "TY: " + response);
                 String jsonString = response;
                 String outTest = "";
@@ -50,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
                 JSONArray entries = programme.getJSONArray("entries");
 
                 List<Programa> programas = new ArrayList<>();
-                Programa.Graficos graficos = new Programa.Graficos();
-                // Itera sobre as entradas e cria objetos ProgramaTV
+
+
                 for (int i = 0; i < entries.length(); i++) {
                     JSONObject entry = entries.getJSONObject(i);
                     Programa programa = new Programa();
@@ -71,18 +82,26 @@ public class MainActivity extends AppCompatActivity {
 
                     programas.add(programa);
                 }
+                int i=0;
                 for (Programa programa : programas) {
 
 
                     if( programa.getTitle() != "null"){
                         Log.d("HTTP Request", "Title: " + programa.getTitle());
-                        Log.d("HTTP Request", "grf: " + graficos.getLogoURL());
-
                         Log.d("HTTP Request", "logoURL: " + programa.getImageURL());
+                        Log.d("HTTP Request","id: "+ i);
+
+
                     }
+                    i++;
                 }
 
+
                 textView.setText(programas.get(2).getTitle());
+                Glide.with(MainActivity.this)
+                        .load(programas.get(2).getImageURL())
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(imageView);
             }
             @Override
             public void onError(Exception e) {
@@ -92,12 +111,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
-        textView.setText("TESTEETETEET");
-
-
         
     }
+
+
 
 }
