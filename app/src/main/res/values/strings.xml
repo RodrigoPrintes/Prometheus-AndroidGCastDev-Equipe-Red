@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">EGP_TPV</string>
+    <string name="request_fail">Falha durante a requisição</string>
 </resources>
