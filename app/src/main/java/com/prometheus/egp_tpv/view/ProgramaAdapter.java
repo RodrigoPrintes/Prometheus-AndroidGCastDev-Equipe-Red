@@ -18,10 +18,12 @@ import java.util.Locale;
 
 public class ProgramaAdapter extends RecyclerView.Adapter<ProgramaAdapter.ProgramaViewHolder> {
 
-    private List<Programa> programas;
+    private final List<Programa> programas;
+    private final OnItemClickListener clickListener;
 
-    public ProgramaAdapter(List<Programa> programas) {
+    public ProgramaAdapter(List<Programa> programas, OnItemClickListener clickListener) {
         this.programas = programas;
+        this.clickListener = clickListener;
     }
 
     @NonNull
@@ -34,7 +36,7 @@ public class ProgramaAdapter extends RecyclerView.Adapter<ProgramaAdapter.Progra
     @Override
     public void onBindViewHolder(@NonNull ProgramaViewHolder holder, int position) {
         Programa programa = programas.get(position);
-        holder.titleTextView.setText(programa.getTitle());
+        holder.titleTextView.setText(programa.getProgram().getName());
         holder.descriptionTextView.setText(programa.getDescription());
         holder.startTimeTextView.setText(programa.getHumanStartTime());
         holder.durationTextView.setText(String.format(Locale.getDefault(), "%d min", programa.getDurationInMinutes()));
@@ -42,6 +44,10 @@ public class ProgramaAdapter extends RecyclerView.Adapter<ProgramaAdapter.Progra
         Glide.with(holder.imageView.getContext())
                 .load(programa.getCustomInfo().getGraficos().getImagemURL())
                 .into(holder.imageView);
+
+        holder.itemView.setOnClickListener(view -> {
+            clickListener.onItemClick(programa);
+        });
     }
 
     @Override

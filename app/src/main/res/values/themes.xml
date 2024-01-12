@@ -1,9 +1,27 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <!-- Base application theme. -->
     <style name="Base.Theme.EGP_TPV" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+        <!-- Cores principais -->
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryVariant">@color/black</item> <!-- Pode ajustar conforme necessário -->
+
+        <!-- Cores de fundo -->
+        <item name="android:windowBackground">@color/white</item>
+
+        <!-- Cores do texto -->
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/grey</item>
+
+        <!-- Cores da barra de status -->
+        <item name="android:statusBarColor">@color/orangeDark</item>
     </style>
 
     <style name="Theme.EGP_TPV" parent="Base.Theme.EGP_TPV" />
+
+    <color name="grey">#757575</color>
+    <color name="orangeDark">#FF5722</color>
+
 </resources>

@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">EGP_TPV</string>
     <string name="request_fail">Falha durante a requisição</string>
+    <string name="image_description">Banner da Progamação</string>
+    <string name="criar_lembrete">Criar lembrete</string>
+    <string name="adicionar_lembrete">Adicionar Lembrete</string>
 </resources>
