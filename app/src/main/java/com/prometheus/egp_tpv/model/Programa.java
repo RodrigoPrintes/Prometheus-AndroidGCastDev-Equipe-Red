@@ -10,10 +10,11 @@ public class Programa {
     private String title;
     private String description;
     private String webmediaTitleId;
+    @SerializedName("start_time")
     private long startTime;
+    @SerializedName("end_time")
     private long endTime;
-    private String humanStartTime;
-    private String humanEndTime;
+    @SerializedName("duration_in_minutes")
     private int durationInMinutes;
     @SerializedName("custom_info")
     private CustomInfo customInfo;
@@ -69,22 +70,6 @@ public class Programa {
 
     public void setEndTime(long endTime) {
         this.endTime = endTime;
-    }
-
-    public String getHumanStartTime() {
-        return humanStartTime;
-    }
-
-    public void setHumanStartTime(String humanStartTime) {
-        this.humanStartTime = humanStartTime;
-    }
-
-    public String getHumanEndTime() {
-        return humanEndTime;
-    }
-
-    public void setHumanEndTime(String humanEndTime) {
-        this.humanEndTime = humanEndTime;
     }
 
     public int getDurationInMinutes() {

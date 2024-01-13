@@ -13,6 +13,8 @@ import com.bumptech.glide.Glide;
 import com.prometheus.egp_tpv.R;
 import com.prometheus.egp_tpv.model.Programa;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -20,6 +22,8 @@ public class ProgramaAdapter extends RecyclerView.Adapter<ProgramaAdapter.Progra
 
     private final List<Programa> programas;
     private final OnItemClickListener clickListener;
+
+    SimpleDateFormat formatter = new SimpleDateFormat("HH:mm", Locale.US);
 
     public ProgramaAdapter(List<Programa> programas, OnItemClickListener clickListener) {
         this.programas = programas;
@@ -36,9 +40,11 @@ public class ProgramaAdapter extends RecyclerView.Adapter<ProgramaAdapter.Progra
     @Override
     public void onBindViewHolder(@NonNull ProgramaViewHolder holder, int position) {
         Programa programa = programas.get(position);
+        String dateTime = formatter.format(new Date(programa.getStartTime()));
+
         holder.titleTextView.setText(programa.getProgram().getName());
         holder.descriptionTextView.setText(programa.getDescription());
-        holder.startTimeTextView.setText(programa.getHumanStartTime());
+        holder.startTimeTextView.setText(dateTime);
         holder.durationTextView.setText(String.format(Locale.getDefault(), "%d min", programa.getDurationInMinutes()));
 
         Glide.with(holder.imageView.getContext())
