@@ -1,5 +1,6 @@
 package com.prometheus.egp_tpv.view;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
@@ -16,6 +17,10 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -122,5 +127,20 @@ public class ProgramaActivity extends AppCompatActivity {
         builder.setWhen(calendar.getTimeInMillis());
         notificationManager.notify(0, builder.build());
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        Log.d("MENU","menu pass");
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.calendar) {
+            Log.d("MENUUU","menu pass");
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

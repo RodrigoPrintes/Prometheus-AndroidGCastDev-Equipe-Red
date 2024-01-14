@@ -4,9 +4,19 @@ import com.google.gson.annotations.SerializedName;
 
 public class Programa {
 
-    @SerializedName("media_id")
-    private String mediaId;
 
+    private int mediaId;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    @SerializedName("date")
+    private String date;
     private String title;
     private String description;
     private String webmediaTitleId;
@@ -41,11 +51,11 @@ public class Programa {
     public static Graficos graficos;
 
     // Métodos getters e setters
-    public String getMediaId() {
+    public int getMediaId() {
         return mediaId;
     }
 
-    public void setMediaId(String mediaId) {
+    public void setMediaId(int mediaId) {
         this.mediaId = mediaId;
     }
 
@@ -111,6 +121,28 @@ public class Programa {
 
     public void setProgram(Program program) {
         this.program = program;
+    }
+
+    public Programa( int mediaId, String title, String description, String webmediaTitleId, long startTime, long endTime, String humanStartTime, int durationInMinutes) {
+        this.mediaId = mediaId;
+        this.title = title;
+        this.description = description;
+        this.webmediaTitleId = webmediaTitleId;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.human_start_time = humanStartTime;
+        this.durationInMinutes = durationInMinutes;
+    }
+    public Programa( int mediaId, String title, String description, String webmediaTitleId, long startTime, long endTime, String humanStartTime, int durationInMinutes, String date) {
+        this.mediaId = mediaId;
+        this.date = date;
+        this.title = title;
+        this.description = description;
+        this.webmediaTitleId = webmediaTitleId;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.human_start_time = humanStartTime;
+        this.durationInMinutes = durationInMinutes;
     }
 }
 
