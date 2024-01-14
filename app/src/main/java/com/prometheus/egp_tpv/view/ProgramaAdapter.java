@@ -12,11 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.prometheus.egp_tpv.R;
 import com.prometheus.egp_tpv.model.Programa;
-
+import com.prometheus.egp_tpv.utils.Utils;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class ProgramaAdapter extends RecyclerView.Adapter<ProgramaAdapter.ProgramaViewHolder> {
 
@@ -24,6 +26,7 @@ public class ProgramaAdapter extends RecyclerView.Adapter<ProgramaAdapter.Progra
     private final OnItemClickListener clickListener;
 
     SimpleDateFormat formatter = new SimpleDateFormat("HH:mm", Locale.US);
+    SimpleDateFormat inputFormat = new SimpleDateFormat("HH:mm:ssXXX");
 
     public ProgramaAdapter(List<Programa> programas, OnItemClickListener clickListener) {
         this.programas = programas;
@@ -44,7 +47,8 @@ public class ProgramaAdapter extends RecyclerView.Adapter<ProgramaAdapter.Progra
 
         holder.titleTextView.setText(programa.getProgram().getName());
         holder.descriptionTextView.setText(programa.getDescription());
-        holder.startTimeTextView.setText(dateTime);
+        holder.startTimeTextView.setText(Utils.formatTimeString(programa.getHuman_start_time()));
+
         holder.durationTextView.setText(String.format(Locale.getDefault(), "%d min", programa.getDurationInMinutes()));
 
         Glide.with(holder.imageView.getContext())

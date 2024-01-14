@@ -20,7 +20,24 @@ public class Programa {
     private CustomInfo customInfo;
     private Program program;
 
-    // Membros públicos
+    public String getHuman_start_time() {
+        return human_start_time;
+    }
+
+    public void setHuman_start_time(String human_start_time) {
+        this.human_start_time = human_start_time;
+    }
+
+    public static Graficos getGraficos() {
+        return graficos;
+    }
+
+    public static void setGraficos(Graficos graficos) {
+        Programa.graficos = graficos;
+    }
+
+    @SerializedName("human_start_time")
+    private String human_start_time;
     public static Graficos graficos;
 
     // Métodos getters e setters
