@@ -5,18 +5,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.widget.DatePicker;
+
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prometheus.egp_tpv.dao.ProgramaDAO;
 import com.prometheus.egp_tpv.model.Programa;
 import com.prometheus.egp_tpv.model.ProgrammeResponse;
@@ -26,14 +26,13 @@ import com.prometheus.egp_tpv.utils.Utils;
 import com.prometheus.egp_tpv.view.ProgramaActivity;
 import com.prometheus.egp_tpv.view.ProgramaAdapter;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
+import java.util.concurrent.atomic.AtomicReference;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,26 +43,32 @@ public class MainActivity extends AppCompatActivity {
     private final MainActivity currentActivity = this;
     List<Programa> programas;
     TextView textView;
-    SimpleDateFormat formatter = new SimpleDateFormat("HH:mm", Locale.US);
     ProgramaDAO programaDAO;
+    private  String newDate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         programas = new ArrayList<>();
         Date currentDate = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        String formattedDate = dateFormat.format(currentDate);
+        newDate = dateFormat.format(currentDate);
 
         EGPGloboApi api = EGPGloboService.getInstance();
-        Call<ProgrammeResponse> call = api.getProgramByDate(formattedDate);
+        Call<ProgrammeResponse> call = api.getProgramByDate(newDate);
         call.enqueue(new OnResult(getApplicationContext()));
 
         programaDAO = new ProgramaDAO(MainActivity.this);
 
-
+        FloatingActionButton fab = findViewById(R.id.btn_calendar);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDatePickerDialog();
+            }
+        });
     }
 
     private void onSelectItem(Programa programa) {
@@ -75,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
 
         startActivity(intent);
     }
-
     class OnResult implements Callback<ProgrammeResponse> {
         private final Context context;
 
@@ -118,25 +122,40 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showDatePickerDialog() {
-
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                MainActivity.this,
                 (datePicker, year1, month1, day) -> {
+                    // Formata a data como "yyyy-MM-dd"
+                    String s = String.format(Locale.getDefault(), "%04d-%02d-%02d", year1, month1 + 1, day);
+                    Toast.makeText(MainActivity.this, "Data selecionada: " + s, Toast.LENGTH_SHORT).show();
 
-                    String selectedDate = day + "/" + (month1 + 1) + "/" + year1;
-                    Toast.makeText(MainActivity.this, "Data selecionada: " + selectedDate, Toast.LENGTH_SHORT).show();
-                }, year, month, dayOfMonth);
+                    newDate = s;
+                    updateProgramList();
 
+                },
+                year,
+                month,
+                dayOfMonth
+        );
 
         datePickerDialog.show();
-    }
 
+    }
     @Override
     protected void onStop() {
         super.onStop();
     }
+    private void updateProgramList() {
+        // Chama a API com a nova data
+        EGPGloboApi api = EGPGloboService.getInstance();
+        Call<ProgrammeResponse> call = api.getProgramByDate(newDate);
+        call.enqueue(new OnResult(getApplicationContext()));
+
+    }
+
 }
